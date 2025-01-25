@@ -1,0 +1,11 @@
+# Virtual environment directory created by PyCharm
+.venv/
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Streamlit logs and cache (optional, include if relevant)
+.streamlit/
+logs/

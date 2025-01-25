@@ -1,0 +1,5 @@
+numpy
+streamlit
+torch
+gradio_client
+transformers
