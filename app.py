@@ -1,7 +1,7 @@
 import streamlit as st
+import numpy
 from queue import Queue
 from threading import Thread
-import numpy as np
 import torch
 from transformers import MusicgenForConditionalGeneration, MusicgenProcessor, set_seed
 
@@ -26,7 +26,7 @@ class MusicgenStreamer:
         self.generation_config = model.generation_config
         self.device = device if device else model.device
         self.play_steps = play_steps
-        self.stride = np.prod(self.audio_encoder.config.upsampling_ratios) * (self.play_steps - self.decoder.num_codebooks) // 6
+        self.stride = numpy.prod(self.audio_encoder.config.upsampling_ratios) * (self.play_steps - self.decoder.num_codebooks) // 6
         self.token_cache = None
         self.to_yield = 0
         self.audio_queue = Queue()
@@ -64,7 +64,7 @@ class MusicgenStreamer:
         if self.token_cache is not None:
             audio_values = self.apply_delay_pattern_mask(self.token_cache)
         else:
-            audio_values = np.zeros(self.to_yield)
+            audio_values = numpy.zeros(self.to_yield)
         stream_end = True
         self.on_finalized_audio(audio_values[self.to_yield:], stream_end)
 
@@ -78,7 +78,7 @@ class MusicgenStreamer:
 
     def __next__(self):
         value = self.audio_queue.get(timeout=self.timeout)
-        if not isinstance(value, np.ndarray) and value == self.stop_signal:
+        if not isinstance(value, numpy.ndarray) and value == self.stop_signal:
             raise StopIteration()
         else:
             return value
@@ -105,7 +105,7 @@ def generate_audio(text_prompt, audio_length_in_s=10.0, play_steps_in_s=2.0):
         if st.session_state.progress_bar:
             progress_value = min((idx + 1) / streamer.total_steps, 1.0)
             st.session_state.progress_bar.progress(progress_value)
-    generated_audio = np.concatenate(all_audio)
+    generated_audio = numpy.concatenate(all_audio)
     #sf.write('generated_audio.wav', generated_audio, sampling_rate)
     return generated_audio
 
