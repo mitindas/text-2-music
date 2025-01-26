@@ -5,7 +5,7 @@ from threading import Thread
 import torch
 from transformers import MusicgenForConditionalGeneration, MusicgenProcessor, set_seed
 
-model = MusicgenForConditionalGeneration.from_pretrained("facebook/musicgen-small")
+model = MusicgenForConditionalGeneration.from_pretrained("facebook/musicgen-small", attn_implementation="eager")
 processor = MusicgenProcessor.from_pretrained("facebook/musicgen-small")
 
 title = "Text to Music!"
